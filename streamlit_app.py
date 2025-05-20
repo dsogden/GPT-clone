@@ -4,22 +4,23 @@ from openai import OpenAI
 OPENAI_API_KEY = st.sidebar.text_input("OpenAI API Key", type="password")
 
 if OPENAI_API_KEY is not None:
-    client = OpenAI(
-        api_key=OPENAI_API_KEY
-    )
+    st.write('accepted the key')
+    # client = OpenAI(
+    #     api_key=OPENAI_API_KEY
+    # )
 
-    # Set a default model
-    if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo"
+    # # Set a default model
+    # if "openai_model" not in st.session_state:
+    #     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 
-        response = client.responses.create(
-            model=st.session_state['openai_model'],
-            instructions="Talk like a pirate.",
-            input="Are semicolons optional in JavaScript?",
-        )
+    #     response = client.responses.create(
+    #         model=st.session_state['openai_model'],
+    #         instructions="Talk like a pirate.",
+    #         input="Are semicolons optional in JavaScript?",
+    #     )
 
-        st.write(response.output_text)
+    #     st.write(response.output_text)
 
 st.title("🎈 My new app")
 st.write(
