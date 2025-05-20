@@ -11,15 +11,14 @@ client = OpenAI(
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
-if OPENAI_API_KEY != None:
-
+if OPENAI_API_KEY is not None:
     response = client.responses.create(
         model=st.session_state['openai_model'],
         instructions="Talk like a pirate.",
         input="Are semicolons optional in JavaScript?",
     )
 
-print(response.output_text)
+    print(response.output_text)
 
 st.title("🎈 My new app")
 st.write(
