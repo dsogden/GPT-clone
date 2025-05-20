@@ -6,6 +6,18 @@ client = OpenAI(
     api_key=OPENAI_API_KEY
 )
 
+# Set a default model
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
+
+response = client.responses.create(
+    model=st.session_state['openai_model'],
+    instructions="Talk like a pirate.",
+    input="Are semicolons optional in JavaScript?",
+)
+
+print(response.output_text)
+
 st.title("🎈 My new app")
 st.write(
     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
