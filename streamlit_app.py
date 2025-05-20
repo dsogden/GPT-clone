@@ -2,8 +2,8 @@ import streamlit as st
 from openai import OpenAI
 
 st.title("ChatGPT-like Clone")
-# OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
-OPENAI_API_KEY = st.sidebar.text_input("OpenAI API Key", type="password")
+OPENAI_API_KEY = st.text_input("OpenAI API Key", type="password")
+
 if OPENAI_API_KEY.startswith('sk-'):
     client = OpenAI(
         api_key=OPENAI_API_KEY
