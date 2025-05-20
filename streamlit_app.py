@@ -2,17 +2,9 @@ import streamlit as st
 from openai import OpenAI
 
 st.title("ChatGPT-like Clone")
-OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
-
-# def generate_response(input_text: str, client: any) -> None:
-#         response = client.responses.create(
-#             model=st.session_state['openai_model'],
-#             instructions="Talk like a pirate.",
-#             input=input_text,
-#         )
-#         return response.output_text
-
-if OPENAI_API_KEY is not None:
+# OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
+OPENAI_API_KEY = st.sidebar.text_input("OpenAI API Key", type="password")
+if OPENAI_API_KEY.startswith('sk-'):
     client = OpenAI(
         api_key=OPENAI_API_KEY
     )
@@ -38,6 +30,7 @@ if OPENAI_API_KEY is not None:
         )
         with st.chat_message('user'):
             st.markdown(prompt)
+
         with st.chat_message("assistant"):
             stream = client.chat.completions.create(
                 model=st.session_state["openai_model"],
