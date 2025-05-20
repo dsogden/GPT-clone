@@ -2,7 +2,7 @@ import streamlit as st
 from openai import OpenAI
 
 OPENAI_API_KEY = st.sidebar.text_input("OpenAI API Key", type="password")
-
+st.write(OPENAI_API_KEY)
 if OPENAI_API_KEY is not None:
     st.write('accepted the key')
     # client = OpenAI(
