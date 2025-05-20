@@ -2,6 +2,7 @@ import streamlit as st
 from openai import OpenAI
 
 OPENAI_API_KEY = st.sidebar.text_input("OpenAI API Key", type="password")
+
 client = OpenAI(
     api_key=OPENAI_API_KEY
 )
@@ -10,11 +11,13 @@ client = OpenAI(
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
-response = client.responses.create(
-    model=st.session_state['openai_model'],
-    instructions="Talk like a pirate.",
-    input="Are semicolons optional in JavaScript?",
-)
+if OPENAI_API_KEY != None:
+
+    response = client.responses.create(
+        model=st.session_state['openai_model'],
+        instructions="Talk like a pirate.",
+        input="Are semicolons optional in JavaScript?",
+    )
 
 print(response.output_text)
 
