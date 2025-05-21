@@ -1,51 +1,26 @@
 import streamlit as st
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+# from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 st.title("ChatGPT-like Clone")
-OPENAI_API_KEY = st.text_input("OpenAI API Key", type="password")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
+os.environ["LANGSMITH_PROJECT"] = os.getenv('LANGSMITH_PROJECT')
+os.environ["LANGSMITH_ENDPOINT"] = os.getenv('LANGSMITH_ENDPOINT')
 
-if OPENAI_API_KEY.startswith('sk-'):
-    client = OpenAI(
-        api_key=OPENAI_API_KEY
-    )
+model = ChatOpenAI(model='gpt-3.5-turbo')
 
-    # Set a default model
-    if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo"
-    
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
+messages = [
+    SystemMessage('Translate the following form English to German'),
+    HumanMessage('What is the date?')
+]
 
-    for message in st.session_state.messages:
-        with st.chat_message(message['role']):
-            st.markdown(message['content'])
-
-    # st.write('Hello, what I can you help you with?')
-    if prompt := st.chat_input('Ask anything'):
-        st.session_state.messages.append(
-            {
-                'role': 'user',
-                'content': prompt
-            }
-        )
-        with st.chat_message('user'):
-            st.markdown(prompt)
-
-        with st.chat_message("assistant"):
-            stream = client.chat.completions.create(
-                model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ],
-                stream=True,
-            )
-            response = st.write_stream(stream)
-        st.session_state.messages.append(
-            {
-                "role": "assistant",
-                "content": response
-            }
-        )
-else:
-    st.write('Please enter your OpenAI key!')
+st.write(
+    model.invoke(messages).content
+)

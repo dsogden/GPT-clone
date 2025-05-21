@@ -4,3 +4,4 @@ langchain
 langsmith
 langgraph
 langchain-openai
+dotenv
