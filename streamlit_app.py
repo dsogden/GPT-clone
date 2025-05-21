@@ -49,12 +49,13 @@ def main():
         with st.chat_message('user'):
             st.markdown(prompt)
             input_message = [HumanMessage(prompt)]
-            response = app.invoke({"messages": input_message}, config)
+            output = app.invoke({"messages": input_message}, config)
+            response = output['messages'][-1].content
         with st.chat_message('assistant'):
-            st.markdown(response['messages'][-1].content)
+            st.markdown(response)
 
         st.session_state.messages.append(
-            {"role": "assistant", "content": response['messages'][-1].content}
+            {"role": "assistant", "content": response}
         )
 
 if __name__ == '__main__':
