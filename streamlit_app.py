@@ -16,11 +16,16 @@ os.environ["LANGSMITH_ENDPOINT"] = os.getenv('LANGSMITH_ENDPOINT')
 
 model = ChatOpenAI(model='gpt-3.5-turbo')
 
-messages = [
-    SystemMessage('Translate the following form English to German'),
-    HumanMessage('What is the date?')
-]
+# messages = [
+#     SystemMessage('Translate the following form English to German'),
+#     HumanMessage('What is the date?')
+# ]
 
-st.write(
-    model.invoke(messages).content
-)
+prompt = st.chat_input("Ask anything")
+if prompt:
+    with st.chat_message('user'):
+        st.markdown(prompt)
+
+# st.write(
+#     model.invoke(messages).content
+# )
