@@ -3,3 +3,4 @@ openai
 langchain
 langsmith
 langgraph
+langchain-openai
