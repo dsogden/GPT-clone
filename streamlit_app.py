@@ -5,6 +5,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 import os
 from dotenv import load_dotenv
+import time
 
 st.title("ChatGPT-like Clone")
 
@@ -37,6 +38,11 @@ config = {"configurable": {"thread_id": "abc123"}}
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 
+def stream_data(input_text):
+    for word in input_text.split(' '):
+        yield word + ' '
+        time.sleep(0.02)
+
 def main():
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -49,9 +55,11 @@ def main():
         with st.chat_message('user'):
             st.markdown(prompt)
             input_message = [HumanMessage(prompt)]
+
+        with st.chat_message('assistant'):
             output = app.invoke({"messages": input_message}, config)
             response = output['messages'][-1].content
-        with st.chat_message('assistant'):
+            
             st.markdown(response)
 
         st.session_state.messages.append(
