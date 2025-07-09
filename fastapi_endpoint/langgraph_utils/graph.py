@@ -24,6 +24,7 @@ MODELS = {
 class Configuration(TypedDict):
     """Just requires the model name"""
     model_name: str
+    thread_id: str
 
 @dataclass
 class State(MessagesState):

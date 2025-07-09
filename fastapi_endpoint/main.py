@@ -7,7 +7,10 @@ app = FastAPI(
     description="General chatbot"
 )
 
-config = {"model_name": "openai"}
+config = {
+    "model_name": "openai",
+    "thread_id": "thread0"
+}
 graph = generate_graph()
 
 class Query(BaseModel):
@@ -20,7 +23,7 @@ class Response(BaseModel):
 async def root():
     return {"message": "running"}
 
-@app.post("/chatbot")
+@app.post("/chatbot/")
 async def post(query: Query, config=config) -> Response:
     input = {"role": "user", "content": query.query}
     response = graph.invoke({"messages": [input]}, config=config)
