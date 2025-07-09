@@ -21,8 +21,6 @@ MODELS = {
     'openai': init_chat_model(model=LLM_MODEL, api_key=API_KEY)
 }
 
-memory = MemorySaver()
-
 class Configuration(TypedDict):
     """Just requires the model name"""
     model_name: str
@@ -45,6 +43,6 @@ def generate_graph():
         StateGraph(State)
         .add_node(call_model)
         .add_edge("__start__", "call_model")
-        .compile(name="Graph", checkpointer=memory)
+        .compile(name="Graph", checkpointer=MemorySaver())
     )
     return graph
