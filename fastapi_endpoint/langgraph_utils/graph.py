@@ -5,6 +5,7 @@ from typing import Any, Dict, TypedDict
 from langchain_core.runnables import RunnableConfig
 from langchain.chat_models import init_chat_model
 from langgraph.graph import StateGraph, MessagesState
+from langgraph.checkpoint.memory import MemorySaver
 
 import os
 from dotenv import load_dotenv
@@ -19,6 +20,8 @@ LLM_MODEL = os.environ.get("LLM_MODEL")
 MODELS = {
     'openai': init_chat_model(model=LLM_MODEL, api_key=API_KEY)
 }
+
+memory = MemorySaver()
 
 class Configuration(TypedDict):
     """Just requires the model name"""
@@ -41,7 +44,7 @@ def generate_graph():
     graph = (
         StateGraph(State)
         .add_node(call_model)
-        .set_entry_point("call_model")
-        .compile(name="Graph")
+        .add_edge("__start__", "call_model")
+        .compile(name="Graph", checkpointer=memory)
     )
     return graph
